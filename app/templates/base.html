@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - OmniDesk</title>
+      {% else %}
+      <title>Welcome to OmniDesk</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>OmniDesk: <a href="/index">Home</a> <a href="/tickets">tickets</a> <a href="/about">about</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

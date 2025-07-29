@@ -5,6 +5,8 @@ __pycache__/
 venv/
 env/
 *.sqlite3
+flask
+.flaskenv
 
 # Node
 node_modules/
