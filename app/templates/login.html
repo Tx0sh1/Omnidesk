@@ -26,8 +26,13 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="d-grid">
+        <div class="d-grid mb-3">
             {{ form.submit(class="btn btn-primary") }}
+        </div>
+
+        <!-- Register Link -->
+        <div class="text-center">
+            <p class="mb-0">New user? <a href="{{ url_for('register') }}">Click to register!</a></p>
         </div>
     </form>
 </div>
