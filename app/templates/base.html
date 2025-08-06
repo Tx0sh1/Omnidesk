@@ -37,26 +37,30 @@
         <div class="collapse navbar-collapse" id="navbarContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="/index">Home</a>
+              <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('tickets') }}">Tickets</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/tickets">Tickets</a>
+              <a class="nav-link" href="{{ url_for('user', username=current_user.username) }}">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/about">About</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
             </li>
+            {% endif %}
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">logout</a>
+              <a class="nav-link" href="{{ url_for('about') }}">About</a>
             </li>
           </ul>
 
           <ul class="navbar-nav ms-auto">
+            {% if not current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link btn btn-outline-light btn-sm me-2" href="/login">Login</a>
+              <a class="nav-link btn btn-outline-light btn-sm me-2" href="{{ url_for('login') }}">Login</a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </div>

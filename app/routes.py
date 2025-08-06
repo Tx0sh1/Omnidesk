@@ -17,7 +17,7 @@ from app.forms import RegistrationForm
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('user/<username>')
+@app.route('/user/<username>')
 @login_required
 def user(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
