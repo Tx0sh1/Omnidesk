@@ -17,7 +17,14 @@ from app.forms import RegistrationForm
 def index():
     return render_template('index.html', title='Home')
 
-@app.route('/tickets') #placeholder for now
+@app.route('user/<username>')
+@login_required
+def user(username):
+    user = db.first_or_404(sa.select(User).where(User.username == username))
+    return render_template('user.html', user=user)
+
+@app.route('/tickets')
+@login_required #placeholder for now
 def tickets():
     return render_template('tickets.html', title='Tickets')
 
@@ -37,7 +44,9 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        if not next_page or urlsplit(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -47,7 +56,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
+        user.set_password(form.password.data)       
         sa.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
