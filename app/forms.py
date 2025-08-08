@@ -4,6 +4,8 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 import sqlalchemy as sa
 from app import db
 from app.models import User
+from wtforms import TextAreaField
+from wtforms.validators import Length
 
 
 class LoginForm(FlaskForm):
@@ -47,3 +49,7 @@ class EditProfileForm(FlaskForm):
                 User.username == username.data))
             if user is not None:
                 raise ValidationError('Please use a different username')
+
+class ResetPasswordRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = (SubmitField('Request Password Reset'))
