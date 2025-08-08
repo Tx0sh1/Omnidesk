@@ -23,6 +23,11 @@ def user(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     return render_template('user.html', user=user)
 
+@app.route('/edit_profile', methods+['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(current_user.username)
+
 @app.route('/tickets')
 @login_required #placeholder for now
 def tickets():
