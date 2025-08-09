@@ -13,6 +13,9 @@ from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from app.forms import ResetPasswordForm
 from app.email import send_password_reset_email
+from flask import request
+from urllib.parse import urlsplit
+
 
 
 @app.route('/')
@@ -104,7 +107,7 @@ def reset_password(token):
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('index'))
-    form = RegistrationForm()
+    form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
