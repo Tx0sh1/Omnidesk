@@ -8,6 +8,7 @@ from app import login
 from time import time
 import jwt
 from app import app
+from datetime import datetime
 
 @login.user_loader
 def load_user(id):
@@ -39,3 +40,27 @@ class User(UserMixin, db.Model):
         except:
             return
         return db.session.get(User, id)
+
+class Ticket(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    title: so.Mapped[str] = so.mapped_column(sa.String(150), nullable=False)
+    description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
+    status: so.Mapped[str] = so.mapped_column(sa.String(50), default='Open')
+    priority: so.Mapped[str] = so.mapped_column(sa.String(50), default="Medium")
+    created_at: so.Mapped[datetime] = so.mapped_column(default=datetime.utcnow)
+    updated_at: so.Mapped[datetime] = so.mapped_column(
+        default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
+    created_by_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), nullable=False)
+    created_by: so.Mapped["User"] = so.relationship(
+        "User", foreign_keys=[created_by_id], backref="tickets"
+    )
+
+    assigned_to_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey('user.id'), nullable=True)
+    assigned_to: so.Mapped[Optional["User"]] = so.relationship(
+        "User", foreign_keys=[assigned_to_id], backref="assigned_tickets"
+    )
+
+    def __repr__(self):
+        return f"<Ticket {self.id} - {self.title} ({self.status})>"
