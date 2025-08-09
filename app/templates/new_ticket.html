@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create New Ticket</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.title.label }} {{ form.title(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.description.label }} {{ form.description(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.priority.label }} {{ form.priority(class="form-control") }}
+    </div>
+    {{ form.submit(class="btn btn-success") }}
+</form>
+{% endblock %}

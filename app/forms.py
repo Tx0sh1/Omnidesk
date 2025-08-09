@@ -6,6 +6,7 @@ from app import db
 from app.models import User
 from wtforms import TextAreaField
 from wtforms.validators import Length
+from wtforms import SelectField
 
 
 class LoginForm(FlaskForm):
@@ -59,3 +60,23 @@ class ResetPasswordForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
+
+class TicketForm(FlaskForm):
+    title =StringField('Title', validators=[DataRequired(), Length(max=150)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    priority = SelectField(
+        'Priority',
+        choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')],
+        default='Medium'
+    )
+    submit = SubmitField('Create Ticket')
+
+class EditTicketForm(FlaskForm):
+    Title = StringField('Title', validators=[DataRequired(), Length(max=150)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    status = SelectField(
+        'Status',
+        choices=[('Open', 'Open'), ('Medium', 'Medium'), ('high', 'High')]
+    )
+    assigned_to = SelectField('Assign to', coerce=int)
+    submit = SubmitField('Update Ticket')

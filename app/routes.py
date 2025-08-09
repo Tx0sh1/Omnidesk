@@ -1,13 +1,12 @@
 from flask import render_template
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, TicketForm, EditTicketForm
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user
 import sqlalchemy as sa
 from app import db
-from app.models import User
-from flask_login import logout_user
-from flask_login import login_required
+from app.models import User, Ticket
+from flask_login import login_required, current_user, logout_user
 from app.forms import RegistrationForm
 from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
@@ -15,6 +14,7 @@ from app.forms import ResetPasswordForm
 from app.email import send_password_reset_email
 from flask import request
 from urllib.parse import urlsplit
+from datetime import datetime
 
 
 
@@ -23,6 +23,12 @@ from urllib.parse import urlsplit
 @login_required
 def index():
     return render_template('index.html', title='Home')
+
+@app.before_request
+def update_last_seen():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 @app.route('/user/<username>')
 @login_required
@@ -46,9 +52,55 @@ def edit_profile():
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 @app.route('/tickets')
-@login_required #placeholder for now
+@login_required
 def tickets():
-    return render_template('tickets.html', title='Tickets')
+    all_tickets = db.session.scalars(sa.select(Ticket)).all()
+    return render_template('tickets.html', title='Tickets', tickets=all_tickets)
+
+@app.route('/tickets/new', methods=['Get', 'POST'])
+@login_required
+def new_ticket():
+    form = TicketForm()
+    if form.validate_on_submit():
+        ticket = Ticket(
+            title=form.title.data,
+            description=form.description.data,
+            priority=form.priority.data,
+            created_by=current_user
+        )
+        db.session.add(ticket)
+        db.session.commit()
+        flash('Ticket created successfully')
+        return redirect(url_for('tickets'))
+    return render_template('new_ticket.html', title='New Ticket', form=form)
+
+@app.route('/tickets/<int:ticket_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_ticket(ticket_id):
+    ticket = db.session.get(Ticket, ticket_id)
+    if not ticket:
+        flash('Ticket not found.')
+        return redirect(url_for('tickets'))
+
+    form = EditTicketForm(obj=ticket)
+    
+    
+    users = db.session.scalars(sa.select(User)).all()
+    form.assigned_to.choices = [(0, 'Unassigned')] + [(u.id, u.username) for u in users]
+
+    if form.validate_on_submit():
+        ticket.title = form.title.data
+        ticket.description = form.description.data
+        ticket.status = form.status.data
+        ticket.priority = form.priority.data
+        ticket.assigned_to_id = form.assigned_to.data if form.assigned_to.data != 0 else None
+        db.session.commit()
+        flash('Ticket updated successfully.')
+        return redirect(url_for('tickets'))
+
+    
+    form.assigned_to.data = ticket.assigned_to_id if ticket.assigned_to_id else 0
+    return render_template('edit_ticket.html', title='Edit Ticket', form=form, ticket=ticket)
 
 @app.route('/about')
 def about():
