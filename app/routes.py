@@ -1,18 +1,10 @@
-from flask import render_template
-from app import app
-from app.forms import LoginForm, TicketForm, EditTicketForm
-from flask import render_template, flash, redirect, url_for
-from flask_login import current_user, login_user
+from flask import render_template, flash, redirect, url_for, request
+from app import app, db
+from app.forms import LoginForm, TicketForm, EditTicketForm, RegistrationForm, ResetPasswordRequestForm
 import sqlalchemy as sa
-from app import db
 from app.models import User, Ticket
-from flask_login import login_required, current_user, logout_user
-from app.forms import RegistrationForm
-from app.forms import ResetPasswordRequestForm
+from flask_login import login_required, current_user, logout_user, login_user
 from app.email import send_password_reset_email
-from app.forms import ResetPasswordForm
-from app.email import send_password_reset_email
-from flask import request
 from urllib.parse import urlsplit
 from datetime import datetime
 

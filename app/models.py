@@ -1,13 +1,11 @@
 from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login
+from app import app, db, login
 from time import time
 import jwt
-from app import app
 from datetime import datetime
 
 @login.user_loader
@@ -68,3 +66,19 @@ class Ticket(db.Model):
 
     def __repr__(self):
         return f"<Ticket {self.id} - {self.title} ({self.status})>"
+
+class ClientTicket(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), nullable=False)
+    surname: so.Mapped[str] = so.mapped_column(sa.String(64), nullable=False)
+    phone: so.Mapped[str] = so.mapped_column(sa.String(20), nullable=False)
+    email: so.Mapped[str] = so.mapped_column(sa.String(120), nullable=False)
+    description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
+    created_at: so.Mapped[datetime] = so.mapped_column(default=datetime.utcnow)
+    images: so.Mapped[Optional[str]] = so.mapped_column(sa.text)
+
+    ticket_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey('ticket.id'))
+    ticket: so.Mapped[Optional["Ticket"]] = so.relationship("Ticket", back_populates="client_ticket")
+
+class Ticket(db.Model):
+    client_ticket: so.Mapped[Optional["ClientTicket"]] = so.relationship("ClientTicket", back_populates="ticket", uselist=False)
