@@ -1,0 +1,46 @@
+2025-08-08 20:01:17,638 ERROR: Exception on /reset_password_request [POST] [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py:875]
+Traceback (most recent call last):
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/routes.py", line 85, in reset_password_request
+    send_password_reset_email(user)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/email.py", line 26, in send_password_reset_email
+    html_body=render_template('email/reset_password.html',
+              ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                user=user, token=token))
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/email/reset_password.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/base.html", line 85, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/email/reset_password.html", line 8, in block 'content'
+    {{ form.hidden_tag() }}
+    ^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'form' is undefined
+2025-08-08 20:04:34,265 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 06:03:36,994 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 06:35:02,444 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 06:35:11,621 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 06:41:57,522 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 06:42:05,348 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+2025-08-09 07:15:24,812 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]

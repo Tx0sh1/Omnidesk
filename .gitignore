@@ -11,3 +11,6 @@ flask
 # Node
 node_modules/
 dist/
+
+#uploads 
+app/static/uploads/

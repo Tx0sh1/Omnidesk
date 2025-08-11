@@ -54,7 +54,7 @@ class Ticket(db.Model):
         default=datetime.utcnow, onupdate=datetime.utcnow
     )
 
-    created_by_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), nullable=False)
+    created_by_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), nullable=True)
     created_by: so.Mapped["User"] = so.relationship(
         "User", foreign_keys=[created_by_id], backref="tickets"
     )
@@ -75,7 +75,7 @@ class ClientTicket(db.Model):
     email: so.Mapped[str] = so.mapped_column(sa.String(120), nullable=False)
     description: so.Mapped[str] = so.mapped_column(sa.Text, nullable=False)
     created_at: so.Mapped[datetime] = so.mapped_column(default=datetime.utcnow)
-    images: so.Mapped[Optional[str]] = so.mapped_column(sa.text)
+    images: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
 
     ticket_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey('ticket.id'))
     ticket: so.Mapped[Optional["Ticket"]] = so.relationship("Ticket", back_populates="client_ticket")

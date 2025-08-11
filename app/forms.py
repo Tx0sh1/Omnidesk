@@ -1,12 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField, MultipleFileField
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 import sqlalchemy as sa
 from app import db
 from app.models import User
-from wtforms import TextAreaField
-from wtforms.validators import Length
-from wtforms import SelectField
+from flask_wtf.file import FileAllowed, FileRequired
 
 
 class LoginForm(FlaskForm):
@@ -80,3 +78,12 @@ class EditTicketForm(FlaskForm):
     )
     assigned_to = SelectField('Assign to', coerce=int)
     submit = SubmitField('Update Ticket')
+
+class ClientTicketForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(max=64)])
+    surname = StringField('Surname', validators=[DataRequired(), Length(max=64)])
+    phone = StringField('Phone Number', validators=[DataRequired(), Length(max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
+    description = TextAreaField('Problem Description', validators=[DataRequired(), Length(max=2000)])
+    images = MultipleFileField('Upload Images (Optional)', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'images only!')])
+    submit =SubmitField('Submit Ticket')
