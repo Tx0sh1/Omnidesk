@@ -6,8 +6,9 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from app import app, db, email
 from app.forms import (
     LoginForm, TicketForm, EditTicketForm, RegistrationForm,
-    ResetPasswordRequestForm, ClientTicketForm,
+    ResetPasswordRequestForm, ClientTicketForm, EditProfileForm, ResetPasswordForm
 )
+
 import sqlalchemy as sa
 from app.models import User, Ticket, ClientTicket
 from flask_login import login_required, current_user, logout_user, login_user
@@ -103,7 +104,7 @@ def tickets():
     all_tickets = db.session.scalars(sa.select(Ticket)).all()
     return render_template('tickets.html', title='Tickets', tickets=all_tickets)
 
-@app.route('/tickets/new', methods=['Get', 'POST'])
+@app.route('/tickets/new', methods=['GET', 'POST'])
 @login_required
 def new_ticket():
     form = TicketForm()
@@ -264,7 +265,8 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
