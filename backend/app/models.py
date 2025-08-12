@@ -19,6 +19,14 @@ class User(UserMixin, db.Model):
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(sa.DateTime, default=datetime.utcnow)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'about_me': self.about_me if hasattr(self, 'about_me') else '',
+            'last_seen': self.last_seen.isoformat() if hasattr(self, 'last_seen') and self.last_seen else None
+        }
 
 
     def set_password(self, password):
@@ -53,6 +61,17 @@ class Ticket(db.Model):
     updated_at: so.Mapped[datetime] = so.mapped_column(
         default=datetime.utcnow, onupdate=datetime.utcnow
     )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'body': self.body,
+            'status': self.status,
+            'priority': self.priority if hasattr(self, 'priority') else 'medium',
+            'created_at': self.timestamp.isoformat() if self.timestamp else None,
+            'user_id': self.user_id
+        }
 
     created_by_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), nullable=True)
     created_by: so.Mapped["User"] = so.relationship(
