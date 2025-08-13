@@ -5,9 +5,8 @@ OmniDesk is a clean, simple, and scalable ticketing system designed to help mana
 ## 🚀 Tech Stack
 
 - Python (Flask)
-- JavaScript (Vanilla)
+- JavaScript (React + TailwindCSS)
 - SQLite (planned for database)
-- HTML / CSS
 - Git & GitHub for version control
 
 ## 🧱 Features (Planned MVP)
