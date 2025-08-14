@@ -1,1 +1,2 @@
-FLASK_APP=backend/omnidesk.py
+FLASK_APP=omnidesk.py
+FLASK_ENV=development

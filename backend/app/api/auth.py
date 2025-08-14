@@ -1,8 +1,9 @@
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, create_refresh_token, get_jwt
 from werkzeug.security import check_password_hash
+from datetime import datetime
 from app.api import bp
-from app.models import User
+from app.models import User, TokenBlacklist
 from app import db
 import sqlalchemy as sa
 from app.email import send_password_reset_email
@@ -69,6 +70,19 @@ def register():
             'is_admin': getattr(user, 'is_admin', False)
         }
     }), 201
+
+@bp.route('/auth/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    token = get_jwt()
+    jti = token['jti']
+    
+    # Add token to blacklist
+    blacklisted_token = TokenBlacklist(jti=jti)
+    db.session.add(blacklisted_token)
+    db.session.commit()
+    
+    return jsonify({'message': 'Successfully logged out'}), 200
 
 @bp.route('/auth/refresh', methods=['POST'])
 @jwt_required(refresh=True)

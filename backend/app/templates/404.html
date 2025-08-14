@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - OmniDesk{% endblock %}
+
+{% block content %}
+<h1>Page Not Found</h1>
+<p>Sorry, the page you are looking for could not be found.</p>
+<p>This might happen if:</p>
+<ul>
+    <li>The URL was typed incorrectly</li>
+    <li>The page has been moved or deleted</li>
+    <li>You don't have permission to access this resource</li>
+</ul>
+<a href="/" class="btn">Go to Dashboard</a>
+<a href="/api/tickets" class="btn">View Tickets</a>
+{% endblock %}

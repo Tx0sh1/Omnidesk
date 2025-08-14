@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}About - OmniDesk{% endblock %}
+
+{% block content %}
+<h1>About OmniDesk</h1>
+<p>OmniDesk is a comprehensive ticketing system designed to streamline customer support and issue tracking.</p>
+
+<h2>Features</h2>
+<ul>
+    <li>User authentication and registration</li>
+    <li>Ticket creation and management</li>
+    <li>Status tracking (open, in-progress, closed)</li>
+    <li>Priority levels for tickets</li>
+    <li>Admin dashboard for oversight</li>
+    <li>Email notifications</li>
+    <li>Client ticket submission portal</li>
+</ul>
+
+<h2>Technology Stack</h2>
+<ul>
+    <li>Backend: Flask (Python)</li>
+    <li>Frontend: React (TypeScript)</li>
+    <li>Database: SQLAlchemy with SQLite/PostgreSQL</li>
+    <li>Authentication: JWT + Flask-Login</li>
+</ul>
+
+<a href="/" class="btn">Back to Dashboard</a>
+{% endblock %}

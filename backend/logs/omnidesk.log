@@ -49,3 +49,18 @@ Traceback (most recent call last):
   File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 99, in _get_source_fast
     raise TemplateNotFound(template)
 jinja2.exceptions.TemplateNotFound: 404.html
+2025-08-14 19:28:32,722 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:29:19,971 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:29:38,004 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:29:52,638 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:30:06,635 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:33:48,552 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:33:49,096 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:50:05,526 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 19:50:06,265 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:88]
+2025-08-14 20:13:35,925 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-14 20:14:01,020 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-14 20:19:26,028 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-14 20:19:29,396 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-14 20:19:38,932 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-14 20:27:53,690 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]

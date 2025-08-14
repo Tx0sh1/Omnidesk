@@ -4,14 +4,15 @@ from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Le
 import sqlalchemy as sa
 from app import db
 from app.models import User
-from flask_wtf.file import FileAllowed, FileRequired
+from flask_wtf.file import FileAllowed
 
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me') #i might remove this later on for security reasons
+    remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign in')
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -33,6 +34,7 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address')
 
+
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     about_me = TextAreaField('About Me', validators=[Length(min=0, max=140)])
@@ -49,18 +51,21 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different username')
 
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = (SubmitField('Request Password Reset'))
+    submit = SubmitField('Request Password Reset')
+
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Request Password Reset')
+    submit = SubmitField('Reset Password')
+
 
 class TicketForm(FlaskForm):
-    title =StringField('Title', validators=[DataRequired(), Length(max=150)])
+    title = StringField('Title', validators=[DataRequired(), Length(max=150)])
     description = TextAreaField('Description', validators=[DataRequired()])
     priority = SelectField(
         'Priority',
@@ -69,15 +74,23 @@ class TicketForm(FlaskForm):
     )
     submit = SubmitField('Create Ticket')
 
+
 class EditTicketForm(FlaskForm):
-    Title = StringField('Title', validators=[DataRequired(), Length(max=150)])
+    title = StringField('Title', validators=[DataRequired(), Length(max=150)])
     description = TextAreaField('Description', validators=[DataRequired()])
     status = SelectField(
         'Status',
-        choices=[('Open', 'Open'), ('Medium', 'Medium'), ('high', 'High')]
+        choices=[('Open', 'Open'), ('In-Progress', 'In-Progress'), ('Closed', 'Closed')],
+        default='Open'
     )
-    assigned_to = SelectField('Assign to', coerce=int)
+    priority = SelectField(
+        'Priority',
+        choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')],
+        default='Medium'
+    )
+    assigned_to = SelectField('Assign to', coerce=int, validate_choice=False)
     submit = SubmitField('Update Ticket')
+
 
 class ClientTicketForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(max=64)])
@@ -85,5 +98,13 @@ class ClientTicketForm(FlaskForm):
     phone = StringField('Phone Number', validators=[DataRequired(), Length(max=20)])
     email = StringField('Email', validators=[DataRequired(), Email(), Length(max=120)])
     description = TextAreaField('Problem Description', validators=[DataRequired(), Length(max=2000)])
-    images = MultipleFileField('Upload Images (Optional)', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'images only!')])
-    submit =SubmitField('Submit Ticket')
+    images = MultipleFileField(
+        'Upload Images (Optional)', 
+        validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx'], 'Images and documents only!')]
+    )
+    submit = SubmitField('Submit Ticket')
+
+
+class TicketReplyForm(FlaskForm):
+    message = TextAreaField('Response', validators=[DataRequired()])
+    submit = SubmitField('Send Response')

@@ -3,14 +3,16 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import app, db, login
+from app import db, login
 from time import time
 import jwt
 from datetime import datetime
+from flask import current_app
 
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
+
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
@@ -18,6 +20,7 @@ class User(UserMixin, db.Model):
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
     last_seen: so.Mapped[Optional[sa.DateTime]] = so.mapped_column(sa.DateTime, default=datetime.utcnow)
+    is_admin: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
 
     def to_dict(self):
         return {
@@ -25,9 +28,9 @@ class User(UserMixin, db.Model):
             'username': self.username,
             'email': self.email,
             'about_me': self.about_me if hasattr(self, 'about_me') else '',
-            'last_seen': self.last_seen.isoformat() if hasattr(self, 'last_seen') and self.last_seen else None
+            'last_seen': self.last_seen.isoformat() if hasattr(self, 'last_seen') and self.last_seen else None,
+            'is_admin': self.is_admin
         }
-
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -36,20 +39,22 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return f'<User {self.username}>'
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256')
+            current_app.config['SECRET_KEY'], algorithm='HS256'
+        )
 
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
+            id = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
         except:
             return
         return db.session.get(User, id)
+
 
 class Ticket(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
@@ -58,20 +63,7 @@ class Ticket(db.Model):
     status: so.Mapped[str] = so.mapped_column(sa.String(50), default='Open')
     priority: so.Mapped[str] = so.mapped_column(sa.String(50), default="Medium")
     created_at: so.Mapped[datetime] = so.mapped_column(default=datetime.utcnow)
-    updated_at: so.Mapped[datetime] = so.mapped_column(
-        default=datetime.utcnow, onupdate=datetime.utcnow
-    )
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'body': self.body,
-            'status': self.status,
-            'priority': self.priority if hasattr(self, 'priority') else 'medium',
-            'created_at': self.timestamp.isoformat() if self.timestamp else None,
-            'user_id': self.user_id
-        }
+    updated_at: so.Mapped[datetime] = so.mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
     created_by_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('user.id'), nullable=True)
     created_by: so.Mapped["User"] = so.relationship(
@@ -83,8 +75,26 @@ class Ticket(db.Model):
         "User", foreign_keys=[assigned_to_id], backref="assigned_tickets"
     )
 
+    client_ticket: so.Mapped[Optional["ClientTicket"]] = so.relationship(
+        "ClientTicket", back_populates="ticket", uselist=False
+    )
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'status': self.status,
+            'priority': self.priority if hasattr(self, 'priority') else 'Medium',
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+            'created_by_id': self.created_by_id,
+            'assigned_to_id': self.assigned_to_id
+        }
+
     def __repr__(self):
         return f"<Ticket {self.id} - {self.title} ({self.status})>"
+
 
 class ClientTicket(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
@@ -97,7 +107,12 @@ class ClientTicket(db.Model):
     images: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
 
     ticket_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey('ticket.id'))
-    ticket: so.Mapped[Optional["Ticket"]] = so.relationship("Ticket", back_populates="client_ticket")
+    ticket: so.Mapped[Optional["Ticket"]] = so.relationship(
+        "Ticket", back_populates="client_ticket"
+    )
 
-class Ticket(db.Model):
-    client_ticket: so.Mapped[Optional["ClientTicket"]] = so.relationship("ClientTicket", back_populates="ticket", uselist=False)
+
+class TokenBlacklist(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    jti: so.Mapped[str] = so.mapped_column(sa.String(36), nullable=False, unique=True)
+    created_at: so.Mapped[datetime] = so.mapped_column(sa.DateTime, default=datetime.utcnow)

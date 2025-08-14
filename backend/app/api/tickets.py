@@ -1,11 +1,12 @@
-from flask import request, jsonify
+import json
+from flask import request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.api import bp
 from app.models import User, Ticket, ClientTicket
-from app import db
+from app import db, mail
 import sqlalchemy as sa
 from datetime import datetime
-from flask_mail import Message, Mail
+from flask_mail import Message
 
 @bp.route('/tickets', methods=['GET'])
 @jwt_required()
@@ -27,7 +28,7 @@ def get_tickets():
             'description': ticket.description,
             'status': ticket.status,
             'priority': ticket.priority,
-            'created_at': ticket.timestamp.isoformat() if ticket.timestamp else None,
+            'created_at': ticket.created_at.isoformat() if ticket.created_at else None,
             'created_by': {
                 'id': ticket.created_by.id,
                 'username': ticket.created_by.username
@@ -81,7 +82,7 @@ def create_ticket():
             'description': ticket.description,
             'status': ticket.status,
             'priority': ticket.priority,
-            'created_at': ticket.timestamp.isoformat() if ticket.timestamp else None
+            'created_at': ticket.created_at.isoformat() if ticket.created_at else None
         }
     }), 201
 
@@ -99,7 +100,7 @@ def get_ticket(ticket_id):
         'description': ticket.description,
         'status': ticket.status,
         'priority': ticket.priority,
-        'created_at': ticket.timestamp.isoformat() if ticket.timestamp else None,
+        'created_at': ticket.created_at.isoformat() if ticket.created_at else None,
         'created_by': {
             'id': ticket.created_by.id,
             'username': ticket.created_by.username
@@ -175,10 +176,9 @@ def reply_to_ticket(ticket_id):
     # Send email to client if email exists
     if ticket.client_ticket and ticket.client_ticket.email:
         try:
-            mail = Mail(current_app)
             msg = Message(
                 subject=f"Response to your support ticket #{ticket.id}",
-                sender=current_app.config['MAIL_DEFAULT_SENDER'],
+                sender=current_app.config.get('MAIL_DEFAULT_SENDER', 'noreply@omnidesk.com'),
                 recipients=[ticket.client_ticket.email]
             )
             msg.body = (

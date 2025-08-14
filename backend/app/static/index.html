@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniDesk - Ticketing System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        .api-links {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .api-links h3 {
+            margin-top: 0;
+        }
+        .api-links a {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 0;
+        }
+        .api-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OmniDesk Ticketing System</h1>
+        <p>Welcome to OmniDesk, a comprehensive ticketing system for customer support and issue tracking.</p>
+        
+        <div class="api-links">
+            <h3>API Endpoints</h3>
+            <a href="/api/auth/login">POST /api/auth/login - User Login</a>
+            <a href="/api/auth/register">POST /api/auth/register - User Registration</a>
+            <a href="/api/tickets">GET /api/tickets - List Tickets</a>
+            <a href="/api/client/submit-ticket">POST /api/client/submit-ticket - Submit Client Ticket</a>
+            <a href="/about">About Page</a>
+        </div>
+        
+        <p><strong>Frontend:</strong> The main application interface is built with React and should be served separately on port 3000 during development.</p>
+        
+        <p><strong>Backend:</strong> This Flask API server handles authentication, ticket management, and data persistence.</p>
+    </div>
+</body>
+</html>
