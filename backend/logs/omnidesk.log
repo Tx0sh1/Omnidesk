@@ -64,3 +64,5 @@ jinja2.exceptions.TemplateNotFound: 404.html
 2025-08-14 20:19:29,396 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
 2025-08-14 20:19:38,932 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
 2025-08-14 20:27:53,690 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-15 06:47:40,173 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]
+2025-08-15 06:47:40,744 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:111]

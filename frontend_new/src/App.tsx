@@ -10,6 +10,8 @@ import TicketDetail from './components/Tickets/TicketDetail';
 import Profile from './components/User/Profile';
 import ClientSubmit from './components/Client/ClientSubmit';
 import ClientStatus from './components/Client/ClientStatus';
+import Home from './components/Pages/Home';
+import About from './components/Pages/About';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const AppContent: React.FC = () => {
@@ -28,10 +30,12 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user && <Navbar />}
-      <main className={user ? 'pt-16' : ''}>
+      <Navbar />
+      <main className="pt-16">
         <Routes>
           {/* Public Routes */}
+          <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route 
             path="/login" 
             element={user ? <Navigate to="/tickets" /> : <Login />} 
@@ -80,7 +84,7 @@ const AppContent: React.FC = () => {
           {/* Default Route */}
           <Route
             path="/"
-            element={<Navigate to={user ? "/tickets" : "/login"} />}
+            element={<Navigate to={user ? "/tickets" : "/home"} />}
           />
 
           {/* Catch All Route */}

@@ -80,159 +80,187 @@ const Register: React.FC = () => {
   const passwordStrength = getPasswordStrength();
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <div className="flex justify-center">
-            <div className="bg-blue-600 text-white p-3 rounded-full">
-              <Ticket className="h-8 w-8" />
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="max-w-md w-full">
+        <div className="card shadow-xl">
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-6">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-2xl shadow-lg">
+                <Ticket className="h-10 w-10" />
+              </div>
             </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Join OmniDesk
+            </h2>
+            <p className="text-gray-600">
+              Create your account to get started
+            </p>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link
-              to="/login"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              sign in to your existing account
-            </Link>
-          </p>
-        </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                autoComplete="username"
-                required
-                className="form-input"
-                placeholder="Choose a username"
-                value={formData.username}
-                onChange={handleChange}
-              />
-              {formData.username.length > 0 && formData.username.length < 3 && (
-                <p className="mt-1 text-sm text-red-600">Username must be at least 3 characters</p>
-              )}
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="username" className="form-label">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  className="form-input"
+                  placeholder="Choose a username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+                {formData.username.length > 0 && formData.username.length < 3 && (
+                  <p className="form-error">Username must be at least 3 characters</p>
+                )}
+              </div>
 
-            <div>
-              <label htmlFor="email" className="form-label">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="form-input"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
+              <div>
+                <label htmlFor="email" className="form-label">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="form-input"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <div>
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="form-input"
-                placeholder="Choose a password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {formData.password.length > 0 && (
-                <div className="mt-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="flex-1 bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          passwordStrength.strength === 1 ? 'bg-red-500 w-1/3' :
-                          passwordStrength.strength === 2 ? 'bg-yellow-500 w-2/3' :
-                          passwordStrength.strength === 3 ? 'bg-green-500 w-full' : 'w-0'
-                        }`}
-                      />
+              <div>
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="form-input"
+                  placeholder="Choose a password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                {formData.password.length > 0 && (
+                  <div className="mt-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full transition-all duration-300 ${
+                            passwordStrength.strength === 1 ? 'bg-red-500 w-1/3' :
+                            passwordStrength.strength === 2 ? 'bg-yellow-500 w-2/3' :
+                            passwordStrength.strength === 3 ? 'bg-green-500 w-full' : 'w-0'
+                          }`}
+                        />
+                      </div>
+                      <span className={`text-sm font-medium ${passwordStrength.color}`}>
+                        {passwordStrength.label}
+                      </span>
                     </div>
-                    <span className={`text-sm ${passwordStrength.color}`}>
-                      {passwordStrength.label}
-                    </span>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="form-input"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                {formData.confirmPassword.length > 0 && (
+                  <div className="mt-2 flex items-center space-x-2">
+                    {formData.password === formData.confirmPassword ? (
+                      <>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-sm text-green-600 font-medium">Passwords match</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle className="h-4 w-4 text-red-500" />
+                        <span className="text-sm text-red-600 font-medium">Passwords do not match</span>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="form-input"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-              {formData.confirmPassword.length > 0 && (
-                <div className="mt-1 flex items-center space-x-1">
-                  {formData.password === formData.confirmPassword ? (
-                    <>
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">Passwords match</span>
-                    </>
-                  ) : (
-                    <>
-                      <AlertCircle className="h-4 w-4 text-red-500" />
-                      <span className="text-sm text-red-600">Passwords do not match</span>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+            {error && (
+              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-4 rounded-lg border border-red-200">
+                <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                <span className="text-sm">{error}</span>
+              </div>
+            )}
 
-          {error && (
-            <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-md">
-              <AlertCircle className="h-5 w-5" />
-              <span className="text-sm">{error}</span>
-            </div>
-          )}
-
-          <div>
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-primary w-full text-lg py-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <span>Creating account...</span>
+                </div>
               ) : (
-                <>
-                  <UserPlus className="h-5 w-5 mr-2" />
-                  Create Account
-                </>
+                <div className="flex items-center justify-center space-x-2">
+                  <UserPlus className="h-5 w-5" />
+                  <span>Create Account</span>
+                </div>
               )}
             </button>
-          </div>
-        </form>
+
+            <div className="text-center space-y-4">
+              <p className="text-gray-600">
+                Already have an account?{' '}
+                <Link
+                  to="/login"
+                  className="font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Sign in here
+                </Link>
+              </p>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or</span>
+                </div>
+              </div>
+              
+              <p className="text-sm text-gray-600">
+                Need support without an account?{' '}
+                <Link
+                  to="/client/submit"
+                  className="font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                >
+                  Submit a ticket
+                </Link>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

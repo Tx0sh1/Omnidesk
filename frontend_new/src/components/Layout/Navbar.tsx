@@ -8,7 +8,9 @@ import {
   Plus, 
   User, 
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Home,
+  Info
 } from 'lucide-react';
 
 const Navbar: React.FC = () => {
@@ -27,10 +29,17 @@ const Navbar: React.FC = () => {
     return location.pathname === path;
   };
 
-  const navItems = [
+  const publicNavItems = [
+    { path: '/home', label: 'Home', icon: Home },
+    { path: '/about', label: 'About', icon: Info },
+  ];
+
+  const authenticatedNavItems = [
     { path: '/tickets', label: 'Tickets', icon: Ticket },
     { path: '/tickets/new', label: 'New Ticket', icon: Plus },
   ];
+
+  const navItems = user ? authenticatedNavItems : publicNavItems;
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 fixed w-full top-0 z-50">
@@ -67,43 +76,61 @@ const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* User Menu */}
+          {/* User Menu or Auth Buttons */}
           <div className="flex items-center space-x-4">
-            {/* Desktop User Menu */}
-            <div className="hidden md:block relative">
-              <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <div className="bg-gray-200 rounded-full p-2">
-                  <User className="h-5 w-5 text-gray-600" />
-                </div>
-                <span className="text-gray-700 font-medium">{user?.username}</span>
-                <ChevronDown className="h-4 w-4 text-gray-500" />
-              </button>
-
-              {isUserMenuOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                  <div className="py-1">
-                    <Link
-                      to="/profile"
-                      className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    >
-                      <User className="h-4 w-4" />
-                      <span>Profile</span>
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <LogOut className="h-4 w-4" />
-                      <span>Sign out</span>
-                    </button>
+            {user ? (
+              /* Authenticated User Menu */
+              <div className="hidden md:block relative">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full p-2">
+                    <User className="h-5 w-5 text-white" />
                   </div>
-                </div>
-              )}
-            </div>
+                  <span className="text-gray-700 font-medium">{user?.username}</span>
+                  <ChevronDown className="h-4 w-4 text-gray-500" />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                    <div className="py-1">
+                      <Link
+                        to="/profile"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center space-x-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign out</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Non-authenticated Auth Buttons */
+              <div className="hidden md:flex items-center space-x-4">
+                <Link
+                  to="/login"
+                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="btn btn-primary text-sm"
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
 
             {/* Mobile Menu Button */}
             <button
@@ -143,34 +170,53 @@ const Navbar: React.FC = () => {
               );
             })}
             
-            <div className="border-t border-gray-200 pt-4">
-              <div className="flex items-center px-3 py-2">
-                <div className="bg-gray-200 rounded-full p-2 mr-3">
-                  <User className="h-5 w-5 text-gray-600" />
+            {user ? (
+              <div className="border-t border-gray-200 pt-4">
+                <div className="flex items-center px-3 py-2">
+                  <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full p-2 mr-3">
+                    <User className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-base font-medium text-gray-800">{user?.username}</div>
+                    <div className="text-sm text-gray-500">{user?.email}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-base font-medium text-gray-800">{user?.username}</div>
-                  <div className="text-sm text-gray-500">{user?.email}</div>
-                </div>
+                
+                <Link
+                  to="/profile"
+                  className="flex items-center space-x-2 px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="h-5 w-5" />
+                  <span>Profile</span>
+                </Link>
+                
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span>Sign out</span>
+                </button>
               </div>
-              
-              <Link
-                to="/profile"
-                className="flex items-center space-x-2 px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <User className="h-5 w-5" />
-                <span>Profile</span>
-              </Link>
-              
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 w-full text-left px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                <LogOut className="h-5 w-5" />
-                <span>Sign out</span>
-              </button>
-            </div>
+            ) : (
+              <div className="border-t border-gray-200 pt-4 space-y-1">
+                <Link
+                  to="/login"
+                  className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="block px-3 py-2 text-base font-medium bg-blue-600 text-white rounded-md mx-3"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}

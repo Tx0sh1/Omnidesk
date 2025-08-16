@@ -11,7 +11,11 @@ import {
   Clock,
   CheckCircle,
   XCircle,
-  User as UserIcon
+  User as UserIcon,
+  RefreshCw,
+  TrendingUp,
+  Calendar,
+  Tag
 } from 'lucide-react';
 
 const TicketList: React.FC = () => {
@@ -30,18 +34,47 @@ const TicketList: React.FC = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError('');
+      
       const [ticketsResponse, usersResponse] = await Promise.all([
         ticketsAPI.getTickets(),
         usersAPI.getUsers()
       ]);
-      setTickets(ticketsResponse.data.tickets);
-      setUsers(usersResponse.data.users);
+      
+      // Ensure we have the expected data structure
+      const ticketsData = ticketsResponse.data?.tickets || [];
+      const usersData = usersResponse.data?.users || [];
+      
+      setTickets(ticketsData);
+      setUsers(usersData);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch tickets');
+      console.error('Error fetching data:', err);
+      const errorMessage = err.response?.data?.message || 
+                          err.message || 
+                          'Failed to fetch tickets. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
+
+  const LoadingSkeleton = () => (
+    <div className="card overflow-hidden">
+      <div className="animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+        <div className="space-y-3">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex space-x-4">
+              <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/5"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   const getStatusIcon = (status: string) => {
     switch (status.toLowerCase()) {
@@ -99,27 +132,45 @@ const TicketList: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading tickets...</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <div className="h-8 bg-gray-200 rounded w-32 mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 rounded w-48 animate-pulse"></div>
+          </div>
+          <div className="h-10 bg-gray-200 rounded w-32 animate-pulse"></div>
         </div>
+        <LoadingSkeleton />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={fetchData}
-            className="btn btn-primary"
-          >
-            Try Again
-          </button>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="min-h-96 flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <div className="bg-red-100 rounded-full p-4 w-fit mx-auto mb-4">
+              <AlertCircle className="h-12 w-12 text-red-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Unable to Load Tickets
+            </h3>
+            <p className="text-red-600 mb-6">{error}</p>
+            <div className="space-y-2">
+              <button
+                onClick={fetchData}
+                className="btn btn-primary flex items-center space-x-2 mx-auto"
+                disabled={loading}
+              >
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                <span>Try Again</span>
+              </button>
+              <p className="text-sm text-gray-500">
+                If the problem persists, please contact support
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -127,19 +178,38 @@ const TicketList: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      {/* Enhanced Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tickets</h1>
-          <p className="text-gray-600 mt-2">Manage and track support tickets</p>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center space-x-3">
+            <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-2 rounded-lg">
+              <Tag className="h-6 w-6" />
+            </div>
+            <span>Support Tickets</span>
+          </h1>
+          <p className="text-gray-600 mt-2 flex items-center space-x-2">
+            <TrendingUp className="h-4 w-4" />
+            <span>Manage and track all support requests</span>
+          </p>
         </div>
-        <Link
-          to="/tickets/new"
-          className="btn btn-primary flex items-center space-x-2"
-        >
-          <Plus className="h-5 w-5" />
-          <span>New Ticket</span>
-        </Link>
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={fetchData}
+            className="btn btn-secondary flex items-center space-x-2"
+            disabled={loading}
+            title="Refresh tickets"
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
+          <Link
+            to="/tickets/new"
+            className="btn btn-primary flex items-center space-x-2 shadow-md hover:shadow-lg transition-shadow"
+          >
+            <Plus className="h-5 w-5" />
+            <span>New Ticket</span>
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
@@ -307,30 +377,53 @@ const TicketList: React.FC = () => {
         )}
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-        <div className="card text-center">
-          <div className="text-2xl font-bold text-gray-900">{tickets.length}</div>
-          <div className="text-sm text-gray-600">Total Tickets</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-2xl font-bold text-red-600">
-            {tickets.filter(t => t.status === 'Open').length}
-          </div>
-          <div className="text-sm text-gray-600">Open</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-2xl font-bold text-yellow-600">
-            {tickets.filter(t => t.status === 'In Progress').length}
-          </div>
-          <div className="text-sm text-gray-600">In Progress</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-2xl font-bold text-green-600">
-            {tickets.filter(t => t.status === 'Resolved').length}
-          </div>
-          <div className="text-sm text-gray-600">Resolved</div>
-        </div>
+      {/* Enhanced Summary Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+        {[
+          {
+            label: "Total Tickets",
+            value: tickets.length,
+            icon: Tag,
+            color: "text-blue-600",
+            bgColor: "bg-blue-50"
+          },
+          {
+            label: "Open",
+            value: tickets.filter(t => t.status === 'Open').length,
+            icon: AlertCircle,
+            color: "text-red-600",
+            bgColor: "bg-red-50"
+          },
+          {
+            label: "In Progress",
+            value: tickets.filter(t => t.status === 'In Progress').length,
+            icon: Clock,
+            color: "text-yellow-600",
+            bgColor: "bg-yellow-50"
+          },
+          {
+            label: "Resolved",
+            value: tickets.filter(t => t.status === 'Resolved').length,
+            icon: CheckCircle,
+            color: "text-green-600",
+            bgColor: "bg-green-50"
+          }
+        ].map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <div key={index} className="card hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </div>
+                <div className={`${stat.bgColor} p-3 rounded-lg`}>
+                  <Icon className={`h-6 w-6 ${stat.color}`} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
