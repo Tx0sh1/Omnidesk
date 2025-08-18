@@ -1,38 +1,84 @@
-2025-08-09 11:09:12,311 ERROR: Exception on /tickets [GET] [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py:875]
+2025-08-12 19:21:05,161 ERROR: Exception on /favicon.ico [GET] [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py:875]
 Traceback (most recent call last):
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/errors.py", line 6, in not_found_error
+    return render_template('404.html'), 404
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-08-12 19:24:42,028 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/__init__.py:53]
+2025-08-12 19:24:45,706 ERROR: Exception on /login [GET] [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py:875]
+Traceback (most recent call last):
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask_login/utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/routes.py", line 104, in tickets
-    return render_template('tickets.html', title='Tickets', tickets=all_tickets)
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/templating.py", line 150, in render_template
-    return _render(app, template, context)
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/flask/templating.py", line 131, in _render
-    rv = template.render(context)
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
-    self.environment.handle_exception()
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/tickets.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/base.html", line 88, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/templates/tickets.html", line 24, in block 'content'
-    <td>{{ ticket.created_by.username }}</td>
-    ^^^^^^^^^^^^^
-  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/venv/lib/python3.13/site-packages/jinja2/environment.py", line 490, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'app.models.Ticket object' has no attribute 'created_by'
-2025-08-09 11:15:30,863 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
-2025-08-09 11:16:27,111 INFO: OMNIDESK startup [in /home/k4r4b0/Desktop/Projects/Python/Omnidesk/app/__init__.py:44]
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/app/routes.py", line 223, in login
+    return render_template('login.html', title='Sign In', form=form)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/k4r4b0/Desktop/Projects/Python/Omnidesk/backend/venv/lib/python3.13/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: login.html

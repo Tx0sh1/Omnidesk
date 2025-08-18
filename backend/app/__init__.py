@@ -110,7 +110,7 @@ def create_app(config_class=Config):
         app.logger.setLevel(logging.INFO)
         app.logger.info('OMNIDESK startup')
 
-    
+    # Import models to register them
     from app import models
 
     return app
